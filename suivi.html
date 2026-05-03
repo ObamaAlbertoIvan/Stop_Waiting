@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Suivi - Stop Waiting</title>
+<link rel='stylesheet' href='style.css'>
+</head>
+<body>
+<div class='page-container'>
+<!-- ENTETE -->
+<div class='entete'>
+<a href='confirmation.html' class='bouton-retour'>&#8592; Retour</a>
+<span class='entete-titre'>Votre file en direct</span>
+</div>
+<!-- SOUS-TITRE -->
+<p class='sous-titre'>N&deg;047 &mdash; Clinique La Grace</p>
+<!-- COMPTEUR -->
+<div class='compteur-bloc'>
+<div id='compteur' class='compteur-chiffre'>5</div>
+<div class='compteur-texte'>personnes avant vous</div>
+</div>
+<!-- BARRE DE PROGRESSION -->
+<div class='barre-fond'>
+<div id='barre' class='barre-progression' style='width: 0%'></div>
+</div>
+<p id='texte-barre' class='sous-titre'>0 personne passee sur 5</p>
+<!-- TEMPS ESTIME -->
+<p class='creneau-titre'>Temps estime avant votre tour :</p>
+<p id='temps' class='temps-estime'>~50 minutes</p>
+<!-- ALERTE ORANGE (cachee au depart) -->
+<div id='alerte' class='alerte-bloc'>
+<p class='alerte-titre'>Preparez-vous a partir !</p>
+<p class='alerte-texte'>
+Il reste 3 personnes &mdash; environ 30 minutes.
+</p>
+</div>
+<!-- BOUTON NOTIFICATION -->
+<div class='boutons-section'>
+<a href='notification.html' class='bouton-principal'>
+Partez maintenant &#8594;
+</a>
+</div>
+<p class='texte-info'>
+Le compteur se met a jour automatiquement.
+</p>
+</div>
+<!-- JAVASCRIPT : compteur automatique -->
+<script>
+var personnesAvant = 5;
+var total = 5;
+function mettreAJour() {
+// Mettre a jour le chiffre
+document.getElementById('compteur').textContent = personnesAvant;
+// Mettre a jour la barre de progression
+var passees = total - personnesAvant;
+var pourcentage = (passees / total) * 100;
+document.getElementById('barre').style.width = pourcentage + '%';
+document.getElementById('texte-barre').textContent =
+passees + ' personne(s) passee(s) sur ' + total;
+// Mettre a jour le temps estime
+var minutes = personnesAvant * 10;
+document.getElementById('temps').textContent = '~' + minutes + ' minutes';
+// Afficher l'alerte a 3 personnes
+if (personnesAvant <= 3) {
+document.getElementById('alerte').classList.add('visible');
+}
+// Rediriger vers notification a 1 personne
+if (personnesAvant <= 1) {
+setTimeout(function() {
+window.location.href = 'notification.html';
+}, 2000);
+}
+}
+// Diminuer le compteur toutes les 10 secondes
+var intervalle = setInterval(function() {
+if (personnesAvant > 0) {
+personnesAvant--;
+mettreAJour();
+} else {
+clearInterval(intervalle);
+}
+}, 10000);
+// Afficher l'etat initial
+mettreAJour();
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Alerte - Stop Waiting</title>
+<link rel='stylesheet' href='style.css'>
+</head>
+<body class='ecran-notification'>
+<div class='page-container'>
+<!-- ICONE D'ALARME -->
+<div class='notification-icone'>&#9888;</div>
+<!-- TITRE FORT -->
+<h1 class='notification-titre'>
+C'est bientot votre tour !
+</h1>
+<!-- MESSAGE PERSONNALISE -->
+<p id='message-perso' class='notification-message'>
+Il reste 1 personne avant vous.
+</p>
+<!-- INSTRUCTION -->
+<p class='notification-message' style='font-style: italic; font-size: 14px;'>
+Partez maintenant pour arriver a l'heure.
+</p>
+<!-- RAPPEL DU CRENEAU -->
+<div class='creneau-rappel'>
+<p style='font-size: 13px; color: #FFFFFF;'>Votre creneau :</p>
+<p style='font-size: 16px; font-weight: bold; color: #FFFFFF;'>
+Mardi 15 Avril a 10h30
+</p>
+</div>
+<!-- BOUTONS -->
+<div class='boutons-section'>
+<a href='suivi.html' class='bouton-vert'>
+Je suis en route &#10003;
+</a>
+<div class='espaceur'></div>
+<a href='accueil.html' class='bouton-danger'>
+Annuler mon numero
+</a>
+</div>
+<!-- AVERTISSEMENT -->
+<p class='notification-avertissement'>
+Si vous ne vous presentez pas dans les 30 minutes,
+votre numero sera reporte en fin de liste.
+</p>
+</div>
+<!-- JAVASCRIPT : afficher le prenom -->
+<script>
+var prenom = localStorage.getItem('prenom');
+if (prenom) {
+document.getElementById('message-perso').textContent =
+prenom + ', il reste 1 personne avant vous.';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Confirmation - Stop Waiting</title>
+<link rel='stylesheet' href='style.css'>
+</head>
+<body>
+<div class='page-container'>
+<!-- ENTETE -->
+<div class='entete'>
+<a href='services.html' class='bouton-retour'>&#8592; Retour</a>
+<span class='entete-titre'>Confirmation</span>
+</div>
+<!-- MESSAGE PERSONNALISE -->
+<h2 id='message-bienvenue' class='titre-page'>
+Bonjour !
+</h2>
+<p class='sous-titre'>
+Votre demande pour Clinique La Grace a bien ete enregistree.
+</p>
+<!-- GRAND NUMERO -->
+<div class='cercle-numero'>
+<span class='numero-label'>N&deg;</span>
+<span class='numero-valeur'>047</span>
+</div>
+<!-- CRENEAU -->
+<p class='creneau-titre'>Votre creneau :</p>
+<p class='creneau-valeur'>Mardi 15 Avril a 10h30</p>
+<!-- BOUTONS -->
+<div class='boutons-section'>
+<a href='suivi.html' class='bouton-principal'>
+Suivre ma file en direct
+</a>
+<div class='espaceur'></div>
+<a href='services.html' class='bouton-danger'>
+Annuler mon numero
+</a>
+</div>
+<p class='texte-info'>
+Vous recevrez une alerte quand il restera 3 personnes avant vous.
+</p>
+<!-- JAVASCRIPT : afficher le prenom -->
+<script>
+var prenom = localStorage.getItem('prenom');
+if (prenom) {
+document.getElementById('message-bienvenue').textContent =
+'Bonjour ' + prenom + ' !';
+}
+</script>
+</body>
+</html>

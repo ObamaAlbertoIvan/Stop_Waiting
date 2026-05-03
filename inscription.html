@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Inscription - Stop Waiting</title>
+<link rel='stylesheet' href='style.css'>
+</head>
+<body>
+<div class='page-container'>
+<!-- ENTETE -->
+<div class='entete'>
+<a href='accueil.html' class='bouton-retour'>&#8592; Retour</a>
+<span class='entete-titre'>Qui etes-vous ?</span>
+</div>
+<!-- SOUS-TITRE -->
+<p class='sous-titre'>
+Entrez vos informations pour personnaliser votre experience
+</p>
+<!-- FORMULAIRE -->
+<div class='champ-groupe'>
+<label class='champ-label'>Votre prenom</label>
+<input type='text' id='prenom' class='champ-input'
+placeholder='Ex: Jean-Pierre'>
+</div>
+<div class='champ-groupe'>
+<label class='champ-label'>Votre nom de famille</label>
+<input type='text' id='nom' class='champ-input'
+placeholder='Ex: Mbarga'>
+</div>
+<div class='champ-groupe'>
+<label class='champ-label'>Votre numero de telephone</label>
+<input type='tel' id='telephone' class='champ-input'
+placeholder='Ex: 6XX XXX XXX'>
+</div>
+<div class='espaceur'></div>
+<!-- BOUTON CONTINUER -->
+<div class='boutons-section'>
+<button onclick='continuer()' class='bouton-principal'>
+Continuer &#8594;
+</button>
+</div>
+</div>
+<script>
+function continuer() {
+var prenom = document.getElementById('prenom').value;
+var nom = document.getElementById('nom').value;
+if (prenom === '' || nom === '') {
+alert('Veuillez entrer votre prenom et votre nom.');
+return;
+}
+// Sauvegarder le nom pour les pages suivantes
+localStorage.setItem('prenom', prenom);
+localStorage.setItem('nom', nom);
+// Aller vers la liste des services
+window.location.href = 'services.html';
+}
+</script>
+</body>
+</html>

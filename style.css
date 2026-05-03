@@ -1,0 +1,371 @@
+/* === STYLE GENERAL === */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Arial, sans-serif;
+}
+body {
+background-color: #242627;
+color: #FFFFFF;
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+/* === ECRAN ACCUEIL === */
+.accueil-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 40px 20px;
+width: 100%;
+max-width: 390px;
+min-height: 100vh;
+justify-content: space-between;
+}
+.app-titre {
+font-size: 36px;
+font-weight: bold;
+color: #FFFFFF;
+text-align: center;
+letter-spacing: 3px;
+}
+.app-slogan {
+font-size: 14px;
+color: #AED6F1;
+text-align: center;
+margin-top: 10px;
+font-style: italic;
+}
+.illustration {
+text-align: center;
+margin: 30px 0;
+}
+.horloge {
+font-size: 80px;
+}
+/* === BOUTONS === */
+.boutons-section {
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 15px;
+}
+.bouton-principal {
+display: block;
+width: 300px;
+padding: 18px;
+background-color: #2E86C1;
+color: #FFFFFF;
+text-align: center;
+border-radius: 12px;
+font-size: 16px;
+font-weight: bold;
+text-decoration: none;
+transition: background 0.2s;
+}
+.bouton-principal:hover {
+background-color: #1A6FA0;
+}
+.bouton-secondaire {
+display: block;
+width: 300px;
+padding: 14px;
+background-color: transparent;
+color: #AED6F1;
+text-align: center;
+border-radius: 12px;
+border: 1px solid #AED6F1;
+font-size: 14px;
+text-decoration: none;
+}
+.bouton-danger {
+display: block;
+width: 300px;
+padding: 14px;
+background-color: #d52c06;
+color: #FFFFFF;
+text-align: center;
+border-radius: 12px;
+font-size: 14px;
+font-weight: bold;
+text-decoration: none;
+}
+.bouton-vert {
+display: block;
+width: 300px;
+padding: 18px;
+background-color: #1E8449;
+color: #FFFFFF;
+text-align: center;
+border-radius: 12px;
+font-size: 16px;
+font-weight: bold;
+text-decoration: none;
+}
+.texte-bas {
+font-size: 11px;
+color: #AED6F1;
+text-align: center;
+margin-top: 20px;
+}
+/* === ENTETE PAGES INTERIEURES === */
+.entete {
+width: 100%;
+padding: 20px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.bouton-retour {
+color: #AED6F1;
+text-decoration: none;
+font-size: 14px;
+}
+.entete-titre {
+font-size: 18px;
+font-weight: bold;
+color: #FFFFFF;
+}
+/* === PAGE GENERALE === */
+.page-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 100%;
+max-width: 390px;
+min-height: 100vh;
+padding-bottom: 40px;
+}
+/* === INSCRIPTION === */
+.champ-groupe {
+width: 320px;
+margin-bottom: 20px;
+}
+.champ-label {
+display: block;
+font-size: 13px;
+color: #AED6F1;
+margin-bottom: 6px;
+}
+.champ-input {
+width: 100%;
+padding: 14px;
+border-radius: 8px;
+border: none;
+font-size: 15px;
+background-color: #FFFFFF;
+color: #1B4F72;
+}
+/* === CARTE SERVICE === */
+.carte-service {
+width: 340px;
+background-color: #FFFFFF;
+border-radius: 12px;
+padding: 16px;
+margin-bottom: 12px;
+cursor: pointer;
+text-decoration: none;
+display: block;
+transition: transform 0.1s;
+}
+.carte-service:hover {
+transform: scale(1.02);
+}
+.service-nom {
+font-size: 15px;
+font-weight: bold;
+color: #1B4F72;
+}
+.service-quartier {
+font-size: 12px;
+color: #555555;
+margin-top: 4px;
+}
+.service-info {
+display: flex;
+gap: 15px;
+margin-top: 8px;
+}
+.service-distance {
+font-size: 12px;
+color: #2E86C1;
+font-weight: bold;
+}
+.service-attente {
+font-size: 12px;
+color: #E67E22;
+font-weight: bold;
+}
+/* === CONFIRMATION === */
+.cercle-numero {
+width: 180px;
+height: 180px;
+background-color: #2E86C1;
+border-radius: 50%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+margin: 30px auto;
+}
+.numero-label {
+font-size: 16px;
+color: #AED6F1;
+}
+.numero-valeur {
+font-size: 52px;
+font-weight: bold;
+color: #FFFFFF;
+line-height: 1;
+}
+.creneau-titre {
+font-size: 14px;
+color: #AED6F1;
+text-align: center;
+}
+.creneau-valeur {
+font-size: 20px;
+font-weight: bold;
+color: #FFFFFF;
+text-align: center;
+margin: 8px 0 25px 0;
+}
+/* === SUIVI === */
+.compteur-bloc {
+background-color: #FFFFFF;
+border-radius: 20px;
+padding: 25px 40px;
+text-align: center;
+margin: 20px 0;
+width: 300px;
+}
+.compteur-chiffre {
+font-size: 64px;
+font-weight: bold;
+color: #1B4F72;
+line-height: 1;
+}
+.compteur-texte {
+font-size: 14px;
+color: #555555;
+margin-top: 8px;
+}
+.barre-fond {
+width: 320px;
+height: 16px;
+background-color: #34495E;
+border-radius: 8px;
+overflow: hidden;
+margin: 10px 0;
+}
+.barre-progression {
+height: 100%;
+background-color: #F39C12;
+border-radius: 8px;
+transition: width 1s ease;
+}
+.temps-estime {
+font-size: 22px;
+font-weight: bold;
+color: #FFFFFF;
+text-align: center;
+margin: 15px 0;
+}
+.alerte-bloc {
+background-color: #E67E22;
+border-radius: 12px;
+padding: 16px 20px;
+width: 340px;
+margin: 15px 0;
+display: none;
+}
+.alerte-bloc.visible {
+display: block;
+}
+.alerte-titre {
+font-size: 15px;
+font-weight: bold;
+color: #FFFFFF;
+}
+.alerte-texte {
+font-size: 13px;
+color: #FFFFFF;
+margin-top: 4px;
+}
+/* === NOTIFICATION === */
+.ecran-notification {
+background-color: #613814;
+}
+.notification-icone {
+font-size: 70px;
+text-align: center;
+margin: 30px 0 15px 0;
+}
+.notification-titre {
+font-size: 28px;
+font-weight: bold;
+color: #FFFFFF;
+text-align: center;
+padding: 0 20px;
+}
+.notification-message {
+font-size: 16px;
+color: #FFFFFF;
+text-align: center;
+margin: 15px 20px;
+}
+.creneau-rappel {
+background-color: rgba(255,255,255,0.2);
+border-radius: 12px;
+padding: 15px 20px;
+text-align: center;
+width: 320px;
+margin: 15px 0;
+}
+.notification-avertissement {
+font-size: 10px;
+color: #FDE8C8;
+text-align: center;
+padding: 0 20px;
+margin-top: 15px;
+}
+/* === BARRE DE RECHERCHE === */
+.barre-recherche {
+width: 320px;
+padding: 12px 16px;
+border-radius: 22px;
+border: none;
+font-size: 14px;
+background-color: #FFFFFF;
+color: #1B4F72;
+margin: 15px 0;
+}
+/* === TEXTES GENERAUX === */
+.titre-page {
+font-size: 22px;
+font-weight: bold;
+color: #FFFFFF;
+text-align: center;
+padding: 10px 20px;
+}
+.sous-titre {
+font-size: 13px;
+color: #AED6F1;
+text-align: center;
+padding: 0 20px;
+margin-bottom: 20px;
+}
+.texte-info {
+font-size: 11px;
+color: #AED6F1;
+text-align: center;
+font-style: italic;
+padding: 0 20px;
+margin-top: 10px;
+}
+.espaceur {
+height: 20px;
+}
