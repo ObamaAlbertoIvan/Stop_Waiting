@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width,
+initial-scale=1.0'>
+<link rel='icon' type='image/x-icon' href='favicon.ico'>
+<title>Stop Waiting</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box;
+font-family:'Segoe UI', Arial, sans-serif; }
+body {
+background:#1B4F72;
+height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+}
+/* Titre en haut */
+.app-nom {
+font-size:22px;
+font-weight:bold;
+color:#FFFFFF;
+margin-bottom:20px;
+letter-spacing:3px;
+}
+/* Dessin du telephone */
+.telephone-cadre {
+width:220px;
+height:400px;
+border:6px solid #FFFFFF;
+border-radius:30px;
+background:#000000;
+position:relative;
+overflow:hidden;
+box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+/* Encoche en haut du telephone */
+.telephone-cadre::before {
+content:'';
+position:absolute;
+top:10px;
+left:50%;
+transform:translateX(-50%);
+width:50px;
+height:4px;
+background:#333333;
+border-radius:2px;
+z-index:10;
+}
+/* Zone des slides dans le telephone */
+.slides-interieur {
+display:flex;
+width:500%;
+height:100%;
+transition:transform 0.6s ease-in-out;
+}
+/* Chaque slide */
+.slide-tel {
+width:20%;
+height:100%;
+overflow:hidden;
+}
+/* Image de l'ecran dans le telephone */
+.slide-tel img {
+width:100%;
+height:100%;
+object-fit:cover;
+object-position:top;
+}
+/* Texte sous le telephone */
+.slide-info {
+text-align:center;
+margin-top:20px;
+padding:0 30px;
+min-height:70px;
+}
+.slide-titre {
+font-size:18px;
+font-weight:bold;
+color:#FFFFFF;
+margin-bottom:6px;
+}
+.slide-texte {
+font-size:13px;
+color:#AED6F1;
+line-height:1.5;
+}
+/* Points de navigation */
+.points {
+display:flex;
+gap:8px;
+margin-top:15px;
+}
+.point {
+width:8px;
+height:8px;
+border-radius:50%;
+background:#34495E;
+transition:all 0.4s;
+}
+.point.actif {
+background:#2E86C1;
+width:22px;
+border-radius:4px;
+}
+/* Bouton Commencer */
+.btn-commencer {
+background:#FFFFFF;
+color:#1B4F72;
+border:none;
+padding:16px 55px;
+border-radius:12px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+margin-top:20px;
+animation:pulsation 1.5s infinite;
+}
+/* Animation pulsation du bouton */
+@keyframes pulsation {
+0% { transform:scale(1); }
+50% { transform:scale(1.05); }
+100% { transform:scale(1); }
+}
+/* Animation fondu du texte */
+@keyframes fondu {
+from { opacity:0; transform:translateY(10px); }
+to { opacity:1; transform:translateY(0); }
+}
+.animer {
+animation:fondu 0.5s ease forwards;
+}
+</style>
+</head>
+<body>
+<!-- NOM DE L'APP -->
+<p class='app-nom'>STOP WAITING</p>
+<!-- TELEPHONE AVEC ECRANS -->
+<div class='telephone-cadre'>
+<div class='slides-interieur' id='slides'>
+<!-- SLIDE 1 -->
+<div class='slide-tel'>
+<img src='ecran1.png' alt='Accueil'>
+</div>
+<!-- SLIDE 2 -->
+<div class='slide-tel'>
+<img src='ecran2.png' alt='Services'>
+</div>
+<!-- SLIDE 3 -->
+<div class='slide-tel'>
+<img src='ecran3.png' alt='Confirmation'>
+</div>
+<!-- SLIDE 4 -->
+<div class='slide-tel'>
+<img src='ecran4.png' alt='Suivi'>
+</div>
+<!-- SLIDE 5 -->
+<div class='slide-tel'>
+<img src='ecran5.png' alt='Notification'>
+</div>
+</div>
+</div>
+<!-- TEXTE SOUS LE TELEPHONE -->
+<div class='slide-info'>
+<p class='slide-titre' id='slide-titre'>
+Fini les files d'attente !
+</p>
+<p class='slide-texte' id='slide-texte'>
+Prenez votre place sans quitter votre maison.
+</p>
+</div>
+<!-- POINTS DE NAVIGATION -->
+<div class='points'>
+<div class='point actif' id='pt0'></div>
+<div class='point' id='pt1'></div>
+<div class='point' id='pt2'></div>
+<div class='point' id='pt3'></div>
+<div class='point' id='pt4'></div>
+</div>
+<!-- BOUTON COMMENCER — toujours visible -->
+<button class='btn-commencer' onclick='commencer()'>
+Commencer &#10003;
+</button>
+<script>
+var slideActuel = 0;
+var total = 5;
+// Textes pour chaque slide
+var titres = [
+'Fini les files d attente !',
+'Choisissez votre service',
+'Votre numero en un clic',
+'Suivez votre file en direct',
+'Pret a commencer ?'
+];
+var textes = [
+'Prenez votre place sans quitter votre maison.',
+'Trouvez le service le plus proche de chez vous.',
+'Recevez votre numero et votre creneau instantanement.',
+'Une alerte quand il reste 3 personnes avant vous.',
+'Rejoignez Stop Waiting — reprenez le controle de votre temps.'
+];
+function allerVers(index) {
+slideActuel = index;
+// Faire glisser les ecrans dans le telephone
+var slides = document.getElementById('slides');
+slides.style.transform =
+'translateX(-' + (slideActuel * 20) + '%)';
+// Mettre a jour les points
+for (var i = 0; i < total; i++) {
+var pt = document.getElementById('pt' + i);
+if (i === slideActuel) {
+pt.classList.add('actif');
+} else {
+pt.classList.remove('actif');
+}
+}
+// Mettre a jour le texte sous le telephone
+var titre = document.getElementById('slide-titre');
+var texte = document.getElementById('slide-texte');
+titre.classList.remove('animer');
+texte.classList.remove('animer');
+// Forcer le rechargement de l'animation
+void titre.offsetWidth;
+void texte.offsetWidth;
+titre.classList.add('animer');
+texte.classList.add('animer');
+titre.textContent = titres[slideActuel];
+texte.textContent = textes[slideActuel];
+}
+// Defile automatiquement toutes les 3 secondes
+setInterval(function() {
+var prochain = (slideActuel + 1) % total;
+allerVers(prochain);
+}, 3000);
+// Quand l'utilisateur appuie sur Commencer
+function commencer() {
+localStorage.setItem('onboarding-vu', 'oui');
+window.location.href = 'accueil.html';
+}
+</script>
+</body>
+</html>

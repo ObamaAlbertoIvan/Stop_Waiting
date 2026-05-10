@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link rel='icon' type='image/x-icon' href='favicon.ico'>
+  <title>Merci - Stop Waiting</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box;
+        font-family:'Segoe UI', Arial, sans-serif; }
+
+    body {
+      background-color: #1B4F72;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* Logo */
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #FFFFFF;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+    }
+
+    .logo-trait {
+      width: 60px;
+      height: 3px;
+      background-color: #2E86C1;
+      border-radius: 2px;
+      margin: 0 auto 50px auto;
+    }
+
+    /* Icone */
+    .icone-merci {
+      font-size: 80px;
+      margin-bottom: 25px;
+      animation: apparition 0.8s ease;
+    }
+
+    /* Message principal */
+    .message-principal {
+      font-size: 26px;
+      font-weight: bold;
+      color: #FFFFFF;
+      text-align: center;
+      margin-bottom: 15px;
+      animation: monter 0.8s ease 0.2s both;
+      opacity: 0;
+    }
+
+    /* Message secondaire */
+    .message-secondaire {
+      font-size: 15px;
+      color: #AED6F1;
+      text-align: center;
+      line-height: 1.7;
+      padding: 0 20px;
+      margin-bottom: 15px;
+      animation: monter 0.8s ease 0.4s both;
+      opacity: 0;
+    }
+
+    /* Message mission */
+    .message-mission {
+      font-size: 13px;
+      color: #AED6F1;
+      text-align: center;
+      font-style: italic;
+      padding: 0 20px;
+      margin-bottom: 50px;
+      animation: monter 0.8s ease 0.6s both;
+      opacity: 0;
+    }
+
+    /* Bouton recommencer */
+    .bouton-recommencer {
+      display: block;
+      width: 300px;
+      padding: 18px;
+      background-color: #2E86C1;
+      color: #FFFFFF;
+      text-align: center;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      animation: monter 0.8s ease 0.8s both;
+      opacity: 0;
+      transition: background 0.2s;
+    }
+
+    .bouton-recommencer:active {
+      transform: scale(0.97);
+      background-color: #1A6FA0;
+    }
+
+    /* Animations */
+    @keyframes apparition {
+      from { opacity:0; transform:scale(0.5); }
+      to   { opacity:1; transform:scale(1); }
+    }
+
+    @keyframes monter {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGO -->
+  <p class='logo'>STOP WAITING</p>
+  <div class='logo-trait'></div>
+
+  <!-- ICONE -->
+  <div class='icone-merci'>&#10004;</div>
+
+  <!-- MESSAGE PERSONNALISE -->
+  <h2 id='message-nom' class='message-principal'>
+    Merci !
+  </h2>
+
+  <!-- MESSAGE PRINCIPAL -->
+  <p class='message-secondaire'>
+    Vous avez repris le contrôle de votre temps.
+  </p>
+
+  <!-- MESSAGE MISSION -->
+  <p class='message-mission'>
+    Stop Waiting était là pour vous — et le sera toujours.
+  </p>
+
+  <!-- BOUTON RECOMMENCER -->
+  <a href='accueil.html' class='bouton-recommencer'
+     onclick="localStorage.removeItem('onboarding-vu')">
+    &#8635; Recommencer
+  </a>
+
+  <!-- JAVASCRIPT : afficher le prenom -->
+  <script>
+    var prenom = localStorage.getItem('prenom');
+    if (prenom) {
+      document.getElementById('message-nom').textContent =
+        'Merci ' + prenom + ' !';
+    }
+  </script>
+
+</body>
+</html>

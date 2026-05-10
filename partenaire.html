@@ -3,6 +3,7 @@
 <head>
 <meta charset='UTF-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<link rel="icon" type = 'image/x-icon' href="favicon.jpeg">
 <title>Espace Partenaire - Stop Waiting</title>
 <link rel='stylesheet' href='style.css'>
 </head>
@@ -81,6 +82,26 @@ Appeler le suivant &#8594;
 </button>
 </div>
 <script>
+   // === PROTECTION MOT DE PASSE ===
+// Verifier si l'agent est deja connecte
+var dejaConnecte = localStorage.getItem('partenaire-connecte');
+if (dejaConnecte !== 'oui') {
+// Demander le mot de passe
+var saisie = prompt(
+'Espace reserve aux partenaires Stop Waiting.\n' +
+'Entrez votre mot de passe :'
+);
+// Verifier le mot de passe
+if (saisie === 'stopwaiting2026') {
+// Correct — sauvegarder la connexion
+localStorage.setItem('partenaire-connecte', 'oui');
+} else {
+// Incorrect — renvoyer vers l'accueil
+alert('Mot de passe incorrect. Acces refuse.');
+window.location.href = 'accueil.html';
+}
+}
+// === FIN PROTECTION === 
 var numeroActuel = 44;
 function mettreAJourAffichage() {
 // Afficher le numero en cours
