@@ -369,3 +369,87 @@ margin-top: 10px;
 .espaceur {
 height: 20px;
 }
+/* ========================================= */
+/* === ANIMATIONS — AJOUTER A LA FIN === */
+/* ========================================= */
+/* --- Fondu au chargement de chaque page --- */
+/* Chaque page apparait progressivement */
+@keyframes fondu-entree {
+from {
+opacity: 0;
+transform: translateY(10px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+body {
+animation: fondu-entree 0.5s ease;
+}
+/* --- Boutons : effet au clic --- */
+/* Le bouton devient un peu plus petit quand on appuie */
+.bouton-principal:active,
+.bouton-secondaire:active,
+.bouton-danger:active,
+.bouton-vert:active {
+transform: scale(0.97);
+transition: transform 0.1s;
+}
+/* --- Cartes de service : effet au survol --- */
+/* La carte se leve legerement quand on appuie */
+.carte-service:active {
+transform: scale(0.98);
+box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+/* --- Compteur : changement de couleur selon valeur --- */
+/* Vert si beaucoup de personnes, rouge si peu */
+.compteur-chiffre.urgent {
+color: #C0392B;
+}
+.compteur-chiffre.attention {
+color: #E67E22;
+}
+/* --- Barre de progression : transition douce --- */
+.barre-progression {
+transition: width 1.5s ease-in-out;
+}
+/* --- Alerte orange : apparition avec animation --- */
+@keyframes apparition-alerte {
+from {
+opacity: 0;
+transform: scale(0.95);
+}
+to {
+opacity: 1;
+transform: scale(1);
+}
+}
+.alerte-bloc.visible {
+display: block;
+animation: apparition-alerte 0.4s ease;
+}
+/* --- Cercle du numero : pulsation douce --- */
+@keyframes pulsation {
+0% { transform: scale(1); }
+50% { transform: scale(1.03); }
+100% { transform: scale(1); }
+}
+.cercle-numero {
+animation: pulsation 2s infinite;
+}
+/* --- Icone d'alarme : clignotement --- */
+@keyframes clignotement {
+0% { opacity: 1; }
+50% { opacity: 0.5; }
+100% { opacity: 1; }
+}
+.notification-icone {
+animation: clignotement 1s infinite;
+}
+/* --- Champs de saisie : bordure au clic --- */
+.champ-input:focus {
+outline: none;
+border: 2px solid #2E86C1;
+box-shadow: 0 0 8px rgba(46,134,193,0.4);
+}

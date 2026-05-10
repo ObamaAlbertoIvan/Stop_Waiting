@@ -18,7 +18,7 @@
 Bonjour !
 </h2>
 <p class='sous-titre'>
-Votre demande pour Clinique La Grace a bien ete enregistree.
+<span id="nom-service">Clinique La Grace</span> a bien ete enregistree.
 </p>
 <!-- GRAND NUMERO -->
 <div class='cercle-numero'>
@@ -27,7 +27,7 @@ Votre demande pour Clinique La Grace a bien ete enregistree.
 </div>
 <!-- CRENEAU -->
 <p class='creneau-titre'>Votre creneau :</p>
-<p class='creneau-valeur'>Mardi 15 Avril a 10h30</p>
+<p class='creneau-valeur'>Mercredi 10 juin 2026 - 10h30</p>
 <!-- BOUTONS -->
 <div class='boutons-section'>
 <a href='suivi.html' class='bouton-principal'>
@@ -39,7 +39,7 @@ Annuler mon numero
 </a>
 </div>
 <p class='texte-info'>
-Vous recevrez une alerte quand il restera 3 personnes avant vous.
+Vous recevrez une alerte quand il restera 3 personnes. Restez a proximite.
 </p>
 <!-- JAVASCRIPT : afficher le prenom -->
 <script>
@@ -47,6 +47,10 @@ var prenom = localStorage.getItem('prenom');
 if (prenom) {
 document.getElementById('message-bienvenue').textContent =
 'Bonjour ' + prenom + ' !';
+}
+var service = localStorage.getItem('service');
+if (service){
+    document.getElementById('nom-service').textContent = service;
 }
 </script>
 </body>

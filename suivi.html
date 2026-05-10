@@ -14,7 +14,9 @@
 <span class='entete-titre'>Votre file en direct</span>
 </div>
 <!-- SOUS-TITRE -->
-<p class='sous-titre'>N&deg;047 &mdash; Clinique La Grace</p>
+<p class='sous-titre'>N&deg;047 &mdash; 
+    <span id='nom-service-suivi'>Clinique La Grace</span>
+</p>
 <!-- COMPTEUR -->
 <div class='compteur-bloc'>
 <div id='compteur' class='compteur-chiffre'>5</div>
@@ -58,9 +60,17 @@ var pourcentage = (passees / total) * 100;
 document.getElementById('barre').style.width = pourcentage + '%';
 document.getElementById('texte-barre').textContent =
 passees + ' personne(s) passee(s) sur ' + total;
+// Changer la couleur du compteur selon l'urgence
+var compteurElement = document.getElementById('compteur');
+compteurElement.classList.remove('urgent', 'attention');
+if (personnesAvant <= 1) {
+compteurElement.classList.add('urgent');
+} else if (personnesAvant <= 3) {
+compteurElement.classList.add('attention');
+}
 // Mettre a jour le temps estime
 var minutes = personnesAvant * 10;
-document.getElementById('temps').textContent = '~' + minutes + ' minutes';
+document.getElementById('temps').textContent = '~' + minutes + ' minutes'
 // Afficher l'alerte a 3 personnes
 if (personnesAvant <= 3) {
 document.getElementById('alerte').classList.add('visible');
@@ -83,6 +93,10 @@ clearInterval(intervalle);
 }, 10000);
 // Afficher l'etat initial
 mettreAJour();
+var service = localStorage.getItem('service');
+if (service){
+    document.getElementById('nom-service-suivi').textContent = service;
+    }
 </script>
 </body>
 </html>
