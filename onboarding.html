@@ -237,7 +237,7 @@ allerVers(prochain);
 }, 3000);
 // Quand l'utilisateur appuie sur Commencer
 function commencer() {
-    localStorage.setItem('onboarding-vu', 'oui');
+    localStorage.removeItem('onboarding-vu');
 window.location.href = 'accueil.html';
 }
 </script>
