@@ -1,103 +1,89 @@
-<!DOCTYPE html>
-<html lang='fr'>
-<head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<link rel="icon" type = 'image/x-icon' href="favicon.jpeg">
-<title>Suivi - Stop Waiting</title>
-<link rel='stylesheet' href='style.css'>
-</head>
-<body>
-<div class='page-container'>
-<!-- ENTETE -->
-<div class='entete'>
-<a href='confirmation.html' class='bouton-retour'>&#8592; Retour</a>
-<span class='entete-titre'>Votre file en direct</span>
-</div>
-<!-- SOUS-TITRE -->
-<p class='sous-titre'>N&deg;047 &mdash; 
-    <span id='nom-service-suivi'>Clinique La Grace</span>
-</p>
-<!-- COMPTEUR -->
-<div class='compteur-bloc'>
-<div id='compteur' class='compteur-chiffre'>5</div>
-<div class='compteur-texte'>personnes avant vous</div>
-</div>
-<!-- BARRE DE PROGRESSION -->
-<div class='barre-fond'>
-<div id='barre' class='barre-progression' style='width: 0%'></div>
-</div>
-<p id='texte-barre' class='sous-titre'>0 personne passee sur 5</p>
-<!-- TEMPS ESTIME -->
-<p class='creneau-titre'>Temps estime avant votre tour :</p>
-<p id='temps' class='temps-estime'>~50 minutes</p>
-<!-- ALERTE ORANGE (cachee au depart) -->
-<div id='alerte' class='alerte-bloc'>
-<p class='alerte-titre'>Preparez-vous a partir !</p>
-<p class='alerte-texte'>
-Il reste 3 personnes &mdash; environ 30 minutes.
-</p>
-</div>
-<!-- BOUTON NOTIFICATION -->
-<div class='boutons-section'>
-<a href='notification.html' class='bouton-principal'>
-Partez maintenant &#8594;
-</a>
-</div>
-<p class='texte-info'>
-Le compteur se met a jour automatiquement.
-</p>
-</div>
-<!-- JAVASCRIPT : compteur automatique -->
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-app-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-auth-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-firestore-compat.js'></script>
 <script>
-var personnesAvant = 5;
-var total = 5;
-function mettreAJour() {
-// Mettre a jour le chiffre
-document.getElementById('compteur').textContent = personnesAvant;
-// Mettre a jour la barre de progression
-var passees = total - personnesAvant;
-var pourcentage = (passees / total) * 100;
-document.getElementById('barre').style.width = pourcentage + '%';
-document.getElementById('texte-barre').textContent =
-passees + ' personne(s) passee(s) sur ' + total;
-// Changer la couleur du compteur selon l'urgence
-var compteurElement = document.getElementById('compteur');
-compteurElement.classList.remove('urgent', 'attention');
-if (personnesAvant <= 1) {
-compteurElement.classList.add('urgent');
-} else if (personnesAvant <= 3) {
-compteurElement.classList.add('attention');
+const firebaseConfig = {
+    apiKey: "AIzaSyAT0mDCRHXznWsQ2VDGDEfLc-nO-_2xDis",
+  authDomain: "stop-waiting.firebaseapp.com",
+  projectId: "stop-waiting",
+  storageBucket: "stop-waiting.firebasestorage.app",
+  messagingSenderId: "598109355925",
+  appId: "1:598109355925:web:43e973299f32992eff009c"  
+};
+if (!firebase.apps.length) {
+firebase.initializeApp(firebaseConfig);
 }
-// Mettre a jour le temps estime
-var minutes = personnesAvant * 10;
-document.getElementById('temps').textContent = '~' + minutes + ' minutes'
-// Afficher l'alerte a 3 personnes
-if (personnesAvant <= 3) {
-document.getElementById('alerte').classList.add('visible');
+const db = firebase.firestore();
+var service = localStorage.getItem('service')
+|| 'Clinique La Grace';
+var monNumero = parseInt(
+localStorage.getItem('monNumero') || '1');
+var alerteEnvoyee = false;
+// Afficher le nom du service
+document.getElementById('nom-service-suivi')
+.textContent = service;
+// Afficher le prenom
+var prenom = localStorage.getItem('prenom') || '';
+// Ecouter la file en temps reel
+db.collection('files')
+.where('service', '==', service)
+.where('statut', '==', 'en-attente')
+.orderBy('numero')
+.onSnapshot(function(snapshot) {
+var personnes = [];
+snapshot.forEach(function(doc) {
+personnes.push(doc.data());
+});
+// Calculer combien de personnes avant moi
+var avantMoi = 0;
+personnes.forEach(function(p) {
+if (p.numero < monNumero) avantMoi++;
+});
+// Mettre a jour le compteur
+var compteurEl = document.getElementById('compteur');
+compteurEl.textContent = avantMoi;
+// Couleur selon l'urgence
+compteurEl.classList.remove('urgent', 'attention');
+if (avantMoi <= 1) {
+compteurEl.classList.add('urgent');
+} else if (avantMoi <= 3) {
+compteurEl.classList.add('attention');
 }
-// Rediriger vers notification a 1 personne
-if (personnesAvant <= 1) {
+// Barre de progression
+var total = Math.max(monNumero, personnes.length);
+var pct = ((total - avantMoi) / total) * 100;
+document.getElementById('barre')
+.style.width = pct + '%';
+// Temps estime
+document.getElementById('temps')
+.textContent = '~' + (avantMoi * 10) + ' minutes';
+// Alerte a 3 personnes
+if (avantMoi <= 3 && avantMoi > 0) {
+document.getElementById('alerte')
+.classList.add('visible');
+// Notification navigateur
+if (!alerteEnvoyee &&
+Notification.permission === 'granted') {
+new Notification('Stop Waiting', {
+body: 'Il reste ' + avantMoi +
+' personne(s) avant vous. Preparez-vous !',
+icon: 'favicon.ico'
+});
+alerteEnvoyee = true;
+}
+}
+// Redirection a 0 personnes avant
+if (avantMoi === 0) {
 setTimeout(function() {
 window.location.href = 'notification.html';
 }, 2000);
 }
+});
+// Demander permission notification
+if (Notification.permission !== 'granted') {
+Notification.requestPermission();
 }
-// Diminuer le compteur toutes les 10 secondes
-var intervalle = setInterval(function() {
-if (personnesAvant > 0) {
-personnesAvant--;
-mettreAJour();
-} else {
-clearInterval(intervalle);
-}
-}, 10000);
-// Afficher l'etat initial
-mettreAJour();
-var service = localStorage.getItem('service');
-if (service){
-    document.getElementById('nom-service-suivi').textContent = service;
-    }
 </script>
-</body>
-</html>

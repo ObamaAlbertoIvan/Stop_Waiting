@@ -2,59 +2,179 @@
 <html lang='fr'>
 <head>
 <meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<link rel="icon" type = 'image/x-icon' href="favicon.jpeg">
-<title>Inscription - Stop Waiting</title>
+<meta name='viewport' content='width=device-width,
+initial-scale=1.0'>
+<link rel='icon' type='image/x-icon' href='favicon.ico'>
+<title>Connexion - Stop Waiting</title>
 <link rel='stylesheet' href='style.css'>
+<!-- Firebase SDK -->
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-app-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-auth-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-firestore-compat.js'></script>
 </head>
 <body>
 <div class='page-container'>
-<!-- ENTETE -->
 <div class='entete'>
-<a href='accueil.html' class='bouton-retour'>&#8592; Retour</a>
-<span class='entete-titre'>Qui etes-vous ?</span>
+<a href='accueil.html' class='bouton-retour'>
+&#8592; Retour
+</a>
+<span class='entete-titre'>Mon compte</span>
 </div>
-<!-- SOUS-TITRE -->
-<p class='sous-titre'>
-Entrez vos informations pour personnaliser votre experience
-</p>
-<!-- FORMULAIRE -->
+<!-- ONGLETS INSCRIPTION / CONNEXION -->
+<div style='display:flex; gap:10px;
+margin:10px 0; width:320px;'>
+<button id='btn-inscription'
+onclick='afficherInscription()'
+style='flex:1; padding:10px;
+background:#2E86C1; color:white;
+border:none; border-radius:8px;
+font-size:14px; cursor:pointer;'>
+Nouveau compte
+</button>
+<button id='btn-connexion'
+onclick='afficherConnexion()'
+style='flex:1; padding:10px;
+background:#34495E; color:white;
+border:none; border-radius:8px;
+font-size:14px; cursor:pointer;'>
+Se connecter
+</button>
+</div>
+<!-- FORMULAIRE INSCRIPTION -->
+<div id='form-inscription'>
 <div class='champ-groupe'>
 <label class='champ-label'>Votre prenom</label>
-<input type='text' id='prenom' class='champ-input'
+<input type='text' id='prenom'
+class='champ-input'
 placeholder='Ex: Jean-Pierre'>
 </div>
 <div class='champ-groupe'>
-<label class='champ-label'>Votre nom de famille</label>
-<input type='text' id='nom' class='champ-input'
-placeholder='Ex: Mbarga'>
+<label class='champ-label'>Email</label>
+<input type='email' id='email-ins'
+class='champ-input'
+placeholder='votre@email.com'>
 </div>
 <div class='champ-groupe'>
-<label class='champ-label'>Votre numero de telephone</label>
-<input type='tel' id='telephone' class='champ-input'
-placeholder='Ex: 6XX XXX XXX'>
+<label class='champ-label'>Mot de passe</label>
+<input type='password' id='mdp-ins'
+class='champ-input'
+placeholder='Minimum 6 caracteres'>
 </div>
-<div class='espaceur'></div>
-<!-- BOUTON CONTINUER -->
+<p id='msg-ins' style='color:#E74C3C;
+font-size:13px;
+text-align:center;
+min-height:20px;'></p>
 <div class='boutons-section'>
-<button onclick='continuer()' class='bouton-principal'>
-Continuer &#8594;
+<button onclick='inscrire()'
+class='bouton-principal'>
+Creer mon compte &#8594;
 </button>
 </div>
 </div>
+<!-- FORMULAIRE CONNEXION -->
+<div id='form-connexion' style='display:none;'>
+<div class='champ-groupe'>
+<label class='champ-label'>Email</label>
+<input type='email' id='email-con'
+class='champ-input'
+placeholder='votre@email.com'>
+</div>
+<div class='champ-groupe'>
+<label class='champ-label'>Mot de passe</label>
+<input type='password' id='mdp-con'
+class='champ-input'
+placeholder='Votre mot de passe'>
+</div>
+<p id='msg-con' style='color:#E74C3C;
+font-size:13px;
+text-align:center;
+min-height:20px;'></p>
+<div class='boutons-section'>
+<button onclick='connecter()'
+class='bouton-principal'>
+Se connecter &#8594;
+</button>
+</div>
+</div>
+</div>
 <script>
-function continuer() {
+// === CONFIGURATION FIREBASE ===
+// Remplace ces valeurs par ta vraie config Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyAT0mDCRHXznWsQ2VDGDEfLc-nO-_2xDis",
+  authDomain: "stop-waiting.firebaseapp.com",
+  projectId: "stop-waiting",
+  storageBucket: "stop-waiting.firebasestorage.app",
+  messagingSenderId: "598109355925",
+  appId: "1:598109355925:web:43e973299f32992eff009c"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+// === FIN CONFIGURATION ===
+function afficherInscription() {
+document.getElementById('form-inscription')
+.style.display = 'block';
+document.getElementById('form-connexion')
+.style.display = 'none';
+}
+function afficherConnexion() {
+document.getElementById('form-inscription')
+.style.display = 'none';
+document.getElementById('form-connexion')
+.style.display = 'block';
+}
+function inscrire() {
 var prenom = document.getElementById('prenom').value;
-var nom = document.getElementById('nom').value;
-if (prenom === '' || nom === '') {
-alert('Veuillez entrer votre prenom et votre nom.');
+var email = document.getElementById('email-ins').value;
+var mdp = document.getElementById('mdp-ins').value;
+if (!prenom || !email || !mdp) {
+document.getElementById('msg-ins').textContent =
+'Remplissez tous les champs.';
 return;
 }
-// Sauvegarder le nom pour les pages suivantes
-localStorage.setItem('prenom', prenom);
-localStorage.setItem('nom', nom);
-// Aller vers la liste des services
+auth.createUserWithEmailAndPassword(email, mdp)
+.then(function(userCredential) {
+var uid = userCredential.user.uid;
+return db.collection('utilisateurs').doc(uid).set({
+prenom: prenom,
+email: email,
+role: 'utilisateur',
+creeLe: new Date()
+});
+})
+.then(function() {
+localStorage.setItem('prenom',
+document.getElementById('prenom').value);
 window.location.href = 'services.html';
+})
+.catch(function(error) {
+document.getElementById('msg-ins').textContent =
+'Erreur : ' + error.message;
+});
+}
+function connecter() {
+var email = document.getElementById('email-con').value;
+var mdp = document.getElementById('mdp-con').value;
+auth.signInWithEmailAndPassword(email, mdp)
+.then(function(userCredential) {
+var uid = userCredential.user.uid;
+return db.collection('utilisateurs').doc(uid).get();
+})
+.then(function(doc) {
+if (doc.exists) {
+localStorage.setItem('prenom', doc.data().prenom);
+}
+window.location.href = 'services.html';
+})
+.catch(function(error) {
+document.getElementById('msg-con').textContent =
+'Email ou mot de passe incorrect.';
+});
 }
 </script>
 </body>

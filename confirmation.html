@@ -1,58 +1,77 @@
-<!DOCTYPE html>
-<html lang='fr'>
-<head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<link rel="icon" type = 'image/x-icon' href="favicon.jpeg">
-<title>Confirmation - Stop Waiting</title>
-<link rel='stylesheet' href='style.css'>
-</head>
-<body>
-<div class='page-container'>
-<!-- ENTETE -->
-<div class='entete'>
-<a href='services.html' class='bouton-retour'>&#8592; Retour</a>
-<span class='entete-titre'>Confirmation</span>
-</div>
-<!-- MESSAGE PERSONNALISE -->
-<h2 id='message-bienvenue' class='titre-page'>
-Bonjour !
-</h2>
-<p class='sous-titre'>
-<span id="nom-service">Clinique La Grace</span> a bien ete enregistree.
-</p>
-<!-- GRAND NUMERO -->
-<div class='cercle-numero'>
-<span class='numero-label'>N&deg;</span>
-<span class='numero-valeur'>047</span>
-</div>
-<!-- CRENEAU -->
-<p class='creneau-titre'>Votre creneau :</p>
-<p class='creneau-valeur'>Mercredi 10 juin 2026 - 10h30</p>
-<!-- BOUTONS -->
-<div class='boutons-section'>
-<a href='suivi.html' class='bouton-principal'>
-Suivre ma file en direct
-</a>
-<div class='espaceur'></div>
-<a href='services.html' class='bouton-danger'>
-Annuler mon numero
-</a>
-</div>
-<p class='texte-info'>
-Vous recevrez une alerte quand il restera 3 personnes. Restez a proximite.
-</p>
-<!-- JAVASCRIPT : afficher le prenom -->
+<!-- Firebase SDK — meme config que inscription.html -->
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-app-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-auth-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-firestore-compat.js'></script>
 <script>
-var prenom = localStorage.getItem('prenom');
+// Meme configuration Firebase que inscription.html
+const firebaseConfig = {
+ apiKey: "AIzaSyAT0mDCRHXznWsQ2VDGDEfLc-nO-_2xDis",
+  authDomain: "stop-waiting.firebaseapp.com",
+  projectId: "stop-waiting",
+  storageBucket: "stop-waiting.firebasestorage.app",
+  messagingSenderId: "598109355925",
+  appId: "1:598109355925:web:43e973299f32992eff009c"
+ };
+if (!firebase.apps.length) {
+firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.firestore();
+const auth = firebase.auth();
+// Recuperer le service depuis l'URL
+var params = new URLSearchParams(window.location.search);
+var service = params.get('service') || 'Clinique La Grace';
+localStorage.setItem('service', service);
+// Afficher le prenom
+var prenom = localStorage.getItem('prenom') || '';
 if (prenom) {
-document.getElementById('message-bienvenue').textContent =
-'Bonjour ' + prenom + ' !';
+document.getElementById('message-bienvenue')
+.textContent = 'Bonjour ' + prenom + ' !';
 }
-var service = localStorage.getItem('service');
-if (service){
-    document.getElementById('nom-service').textContent = service;
+// Afficher le nom du service
+document.getElementById('nom-service')
+.textContent = service;
+// Prendre un numero dans Firebase
+var monNumero = null;
+auth.onAuthStateChanged(function(user) {
+if (user) {
+// Compter combien de personnes sont dans la file
+db.collection('files')
+.where('service', '==', service)
+.where('statut', '==', 'en-attente')
+.get()
+.then(function(snapshot) {
+monNumero = snapshot.size + 1;
+// Enregistrer dans Firebase
+return db.collection('files').add({
+userId: user.uid,
+prenom: prenom,
+service: service,
+numero: monNumero,
+statut: 'en-attente',
+dateCreation: new Date()
+});
+})
+.then(function(docRef) {
+localStorage.setItem('fileId', docRef.id);
+localStorage.setItem('monNumero',
+monNumero.toString());
+// Afficher le numero
+var numFormate = monNumero.toString()
+.padStart(3, '0');
+document.getElementById('numero-valeur')
+.textContent = numFormate;
+});
+} else {
+// Non connecte — utiliser localStorage
+var num = parseInt(
+localStorage.getItem('compteur') || '0') + 1;
+localStorage.setItem('compteur', num.toString());
+localStorage.setItem('monNumero', num.toString());
+document.getElementById('numero-valeur')
+.textContent = num.toString().padStart(3, '0');
 }
+});
 </script>
-</body>
-</html>

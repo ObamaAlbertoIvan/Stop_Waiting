@@ -2,27 +2,81 @@
 <html lang='fr'>
 <head>
 <meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<link rel="icon" type = 'image/x-icon' href="favicon.jpeg">
+<meta name='viewport' content='width=device-width,
+initial-scale=1.0'>
+<link rel='icon' type='image/x-icon' href='favicon.ico'>
 <title>Espace Partenaire - Stop Waiting</title>
 <link rel='stylesheet' href='style.css'>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-app-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-auth-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/
+firebase-firestore-compat.js'></script>
 </head>
 <body>
 <div class='page-container'>
-<!-- ENTETE PARTENAIRE -->
+<!-- ECRAN DE CONNEXION PARTENAIRE -->
+<div id='ecran-connexion'>
 <div class='entete'>
-<a href='accueil.html' class='bouton-retour'>&#8592; Retour</a>
-<span class='entete-titre'>&#127974; UBA</span>
+<a href='accueil.html' class='bouton-retour'>
+&#8592; Retour
+</a>
+<span class='entete-titre'>Espace Partenaire</span>
 </div>
-<p class='sous-titre'>Tableau de bord agent d'accueil</p>
+<p class='sous-titre'>
+Connexion reservee aux structures partenaires
+</p>
+<div class='champ-groupe'>
+<label class='champ-label'>Email partenaire</label>
+<input type='email' id='email-part'
+class='champ-input'
+placeholder='partenaire@email.com'>
+</div>
+<div class='champ-groupe'>
+<label class='champ-label'>Mot de passe</label>
+<input type='password' id='mdp-part'
+class='champ-input'
+placeholder='Mot de passe'>
+</div>
+<p id='msg-part' style='color:#E74C3C;
+font-size:13px;
+text-align:center;
+min-height:20px;'></p>
+<div class='boutons-section'>
+<button onclick='connecterPartenaire()'
+class='bouton-principal'>
+Acceder au tableau de bord
+</button>
+</div>
+</div>
+<!-- TABLEAU DE BORD — visible apres connexion -->
+<div id='tableau-bord' style='display:none;
+width:100%;'>
+<div class='entete'>
+<button onclick='deconnecterPartenaire()'
+class='bouton-retour'
+style='background:none; border:none;
+cursor:pointer;'>
+&#8592; Deconnexion
+</button>
+<span class='entete-titre'>
+&#127970; Clinique La Grace
+</span>
+</div>
+<p class='sous-titre'>Tableau de bord en temps reel</p>
 <!-- NUMERO EN COURS -->
 <div style='background:#2E86C1; border-radius:16px;
-padding:20px; width:320px; text-align:center;
-margin:15px 0;'>
-<p style='font-size:13px; color:#AED6F1;'>Numero en cours</p>
+padding:20px; width:320px;
+text-align:center; margin:15px 0;'>
+<p style='font-size:13px; color:#AED6F1;'>
+Numero en cours
+</p>
 <p id='numero-actuel'
-style='font-size:56px; font-weight:bold; color:#FFFFFF;
-line-height:1;'>044</p>
+style='font-size:56px; font-weight:bold;
+color:#FFFFFF; line-height:1;'>
+---
+</p>
 <p style='font-size:12px; color:#AED6F1;'>
 Temps moyen : 10 min par personne
 </p>
@@ -30,102 +84,146 @@ Temps moyen : 10 min par personne
 <!-- PROCHAINS NUMEROS -->
 <div style='width:320px; margin-bottom:15px;'>
 <p style='font-size:13px; color:#AED6F1;
-margin-bottom:8px;'>Prochains numeros :</p>
-<div style='display:flex; gap:10px;'>
-<div style='background:#34495E; border-radius:10px;
-padding:12px 20px; text-align:center; flex:1;'>
-<p id = 'prochain1' style='font-size:20px; font-weight:bold;
-color:#FFFFFF;'>045</p>
-</div>
-<div style='background:#34495E; border-radius:10px;
-padding:12px 20px; text-align:center; flex:1;'>
-<p id = 'prochain2' style='font-size:20px; font-weight:bold;
-color:#FFFFFF;'>046</p>
-</div>
-<div style='background:#34495E; border-radius:10px;
-padding:12px 20px; text-align:center; flex:1;'>
-<p id = 'prochain3' style='font-size:20px; font-weight:bold;
-color:#FFFFFF;'>047</p>
+margin-bottom:8px;'>
+Prochains en attente :
+</p>
+<div id='liste-attente'
+style='display:flex; gap:10px; flex-wrap:wrap;'>
 </div>
 </div>
-</div>
-<!-- STATISTIQUES DU JOUR -->
+<!-- STATISTIQUES -->
 <div style='background:#FFFFFF; border-radius:12px;
-padding:16px; width:320px; margin-bottom:15px;'>
+padding:16px; width:320px;
+margin-bottom:15px;'>
 <p style='font-size:13px; font-weight:bold;
 color:#1B4F72; margin-bottom:10px;'>
 &#128200; Statistiques du jour
 </p>
-<div style='display:flex; justify-content:space-between;
+<div style='display:flex;
+justify-content:space-between;
 margin-bottom:8px;'>
-<span style='font-size:12px; color:#555;'>Clients servis</span>
-<span id = 'clients-servis' style='font-size:12px; font-weight:bold;
-color:#1B4F72;'>43</span>
+<span style='font-size:12px; color:#555;'>
+Clients servis
+</span>
+<span id='nb-servis'
+style='font-size:12px; font-weight:bold;
+color:#1B4F72;'>0</span>
 </div>
-<div style='display:flex; justify-content:space-between;
-margin-bottom:8px;'>
-<span style='font-size:12px; color:#555;'>En attente</span>
-<span id = 'en-attente' style='font-size:12px; font-weight:bold;
-color:#E67E22;'>25</span>
-</div>
-<div style='display:flex; justify-content:space-between;',>
-<span style='font-size:12px; color:#555;'>Heure de pointe</span>
-<span style='font-size:12px; font-weight:bold;
-color:#1B4F72;'>09h00 - 11h00</span>
+<div style='display:flex;
+justify-content:space-between;'>
+<span style='font-size:12px; color:#555;'>
+En attente
+</span>
+<span id='nb-attente'
+style='font-size:12px; font-weight:bold;
+color:#E67E22;'>0</span>
 </div>
 </div>
-<!-- BOUTON SUIVANT -->
+<!-- BOUTON APPELER SUIVANT -->
 <div class='boutons-section'>
 <button onclick='appellerSuivant()'
 class='bouton-principal'>
 Appeler le suivant &#8594;
 </button>
 </div>
+</div>
+</div>
 <script>
-   // === PROTECTION MOT DE PASSE ===
-// Verifier si l'agent est deja connecte
-var dejaConnecte = localStorage.getItem('partenaire-connecte');
-if (dejaConnecte !== 'oui') {
-// Demander le mot de passe
-var saisie = prompt(
-'Espace reserve aux partenaires Stop Waiting.\n' +
-'Entrez votre mot de passe :'
-);
-// Verifier le mot de passe
-if (saisie === 'stopwaiting2026') {
-// Correct — sauvegarder la connexion
-localStorage.setItem('partenaire-connecte', 'oui');
-} else {
-// Incorrect — renvoyer vers l'accueil
-alert('Mot de passe incorrect. Acces refuse.');
+const firebaseConfig = { 
+    apiKey: "AIzaSyAT0mDCRHXznWsQ2VDGDEfLc-nO-_2xDis",
+  authDomain: "stop-waiting.firebaseapp.com",
+  projectId: "stop-waiting",
+  storageBucket: "stop-waiting.firebasestorage.app",
+  messagingSenderId: "598109355925",
+  appId: "1:598109355925:web:43e973299f32992eff009c" 
+};
+if (!firebase.apps.length) {
+firebase.initializeApp(firebaseConfig);
+}
+const auth = firebase.auth();
+const db = firebase.firestore();
+var numeroEnCours = 0;
+var unsubscribe = null;
+function connecterPartenaire() {
+var email = document.getElementById('email-part').value;
+var mdp = document.getElementById('mdp-part').value;
+auth.signInWithEmailAndPassword(email, mdp)
+.then(function() {
+document.getElementById('ecran-connexion')
+.style.display = 'none';
+document.getElementById('tableau-bord')
+.style.display = 'block';
+ecouterFile();
+})
+.catch(function() {
+document.getElementById('msg-part').textContent =
+'Email ou mot de passe incorrect.';
+});
+}
+function ecouterFile() {
+// Ecouter en temps reel les changements de la file
+unsubscribe = db.collection('files')
+.where('service', '==', 'Clinique La Grace')
+.where('statut', '==', 'en-attente')
+.orderBy('numero')
+.onSnapshot(function(snapshot) {
+var personnes = [];
+snapshot.forEach(function(doc) {
+personnes.push({
+id: doc.id,
+...doc.data()
+});
+});
+// Mettre a jour l'affichage
+if (personnes.length > 0) {
+var numFormate = personnes[0].numero
+.toString().padStart(3, '0');
+document.getElementById('numero-actuel')
+.textContent = numFormate;
+}
+// Afficher les suivants
+var listeEl = document.getElementById('liste-attente');
+listeEl.innerHTML = '';
+var suivants = personnes.slice(1, 4);
+suivants.forEach(function(p) {
+var div = document.createElement('div');
+div.style.cssText = 'background:#34495E; border-radius:10px; padding:10px 16px; text-align:center;';
+div.style.cssText = 'background:#34495E; border-radius:10px; padding:10px 16px; text-align:center;';
+listeEl.appendChild(div);
+});
+// Statistiques
+document.getElementById('nb-attente')
+.textContent = personnes.length;
+});
+}
+function appellerSuivant() {
+// Marquer le premier comme servi
+db.collection('files')
+.where('service', '==', 'Clinique La Grace')
+.where('statut', '==', 'en-attente')
+.orderBy('numero')
+.limit(1)
+.get()
+.then(function(snapshot) {
+if (!snapshot.empty) {
+var doc = snapshot.docs[0];
+return doc.ref.update({ statut: 'servi' });
+}
+})
+.then(function() {
+var servis = parseInt(
+document.getElementById('nb-servis')
+.textContent) + 1;
+document.getElementById('nb-servis')
+.textContent = servis;
+});
+}
+function deconnecterPartenaire() {
+if (unsubscribe) unsubscribe();
+auth.signOut().then(function() {
 window.location.href = 'accueil.html';
+});
 }
-}
-// === FIN PROTECTION === 
-var numeroActuel = 44;
-function mettreAJourAffichage() {
-// Afficher le numero en cours
-var affichage = numeroActuel.toString().padStart(3, '0');
-document.getElementById('numero-actuel').textContent = affichage;
-
-// calculer et afficher les 3 prochains numeros
-var p1 = (numeroActuel + 1).toString().padStart(3, '0');
-var p2 = (numeroActuel + 2).toString().padStart(3, '0');
-var p3 = (numeroActuel + 3).toString().padStart(3, '0');
-
-document.getElementById('prochain1').textContent = p1;
-document.getElementById('prochain2').textContent = p2;
-document.getElementById('prochain3').textContent = p3;
-
-document.getElementById('clients-servis').textContent = numeroActuel;
-document.getElementById('en-attente').textContent = Math.max(0, 25 - (numeroActuel- 44));
-}
-    function appellerSuivant(){
-        numeroActuel++;
-        mettreAJourAffichage();
-    }
-    // Afficher l'etat initial au changement de la page
-    mettreAJourAffichage();
 </script>
 </body>
 </html>
