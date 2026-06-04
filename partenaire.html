@@ -7,12 +7,9 @@ initial-scale=1.0'>
 <link rel='icon' type='image/x-icon' href='favicon.ico'>
 <title>Espace Partenaire - Stop Waiting</title>
 <link rel='stylesheet' href='style.css'>
-<script src='https://www.gstatic.com/firebasejs/10.7.0/
-firebase-app-compat.js'></script>
-<script src='https://www.gstatic.com/firebasejs/10.7.0/
-firebase-auth-compat.js'></script>
-<script src='https://www.gstatic.com/firebasejs/10.7.0/
-firebase-firestore-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js'></script>
+<script src='https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js'></script>
 </head>
 <body>
 <div class='page-container'>
@@ -61,7 +58,7 @@ cursor:pointer;'>
 &#8592; Deconnexion
 </button>
 <span class='entete-titre'>
-&#127970; Clinique La Grace
+&#127974; UBA
 </span>
 </div>
 <p class='sous-titre'>Tableau de bord en temps reel</p>
@@ -163,7 +160,7 @@ document.getElementById('msg-part').textContent =
 function ecouterFile() {
 // Ecouter en temps reel les changements de la file
 unsubscribe = db.collection('files')
-.where('service', '==', 'Clinique La Grace')
+.where('service', '==', 'UBA')
 .where('statut', '==', 'en-attente')
 .orderBy('numero')
 .onSnapshot(function(snapshot) {
@@ -199,7 +196,7 @@ document.getElementById('nb-attente')
 function appellerSuivant() {
 // Marquer le premier comme servi
 db.collection('files')
-.where('service', '==', 'Clinique La Grace')
+.where('service', '==', 'UBA')
 .where('statut', '==', 'en-attente')
 .orderBy('numero')
 .limit(1)
