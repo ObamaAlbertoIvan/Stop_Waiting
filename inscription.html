@@ -56,9 +56,18 @@ placeholder='votre@email.com'>
 </div>
 <div class='champ-groupe'>
 <label class='champ-label'>Mot de passe</label>
-<input type='password' id='mdp-ins'
-class='champ-input'
-placeholder='Minimum 6 caracteres'>
+<div style='position:relative;'>
+  <input type='password' id='mdp-ins'
+  class='champ-input'
+  placeholder='Minimum 6 caracteres'
+  style='width:100%; padding-right:45px;'>
+  <span onclick="
+    var x = document.getElementById('mdp-ins');
+    x.type = x.type === 'password' ? 'text' : 'password';
+    this.textContent = x.type === 'password' ? '👁️' : '🙈';
+  " style='position:absolute; right:12px; top:50%;
+  transform:translateY(-50%); cursor:pointer;
+  font-size:18px;'>👁️</span>
 </div>
 <p id='msg-ins' style='color:#E74C3C;
 font-size:13px;
@@ -81,9 +90,18 @@ placeholder='votre@email.com'>
 </div>
 <div class='champ-groupe'>
 <label class='champ-label'>Mot de passe</label>
-<input type='password' id='mdp-con'
-class='champ-input'
-placeholder='Votre mot de passe'>
+<div style='position:relative;'>
+  <input type='password' id='mdp-ins'
+  class='champ-input'
+  placeholder='Minimum 6 caracteres'
+  style='width:100%; padding-right:45px;'>
+  <span onclick="
+    var x = document.getElementById('mdp-ins');
+    x.type = x.type === 'password' ? 'text' : 'password';
+    this.textContent = x.type === 'password' ? '👁️' : '🙈';
+  " style='position:absolute; right:12px; top:50%;
+  transform:translateY(-50%); cursor:pointer;
+  font-size:18px;'>👁️</span>
 </div>
 <p id='msg-con' style='color:#E74C3C;
 font-size:13px;

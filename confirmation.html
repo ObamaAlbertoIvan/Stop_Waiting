@@ -1,74 +1,271 @@
-<!-- Firebase SDK — meme config que inscription.html -->
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<link rel='icon' type='image/x-icon' href='favicon.ico'>
+<title>Confirmation - Stop Waiting</title>
+<link rel='stylesheet' href='style.css'>
+<style>
+  .confirmation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+    background: #1a1a2e;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .entete {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .bouton-retour {
+    color: #7ecbff;
+    text-decoration: none;
+    font-size: 15px;
+    margin-right: 10px;
+  }
+
+  .entete-titre {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .bienvenue {
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .service-enregistre {
+    font-size: 14px;
+    color: #aaa;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .cercle-numero {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #2E86C1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    box-shadow: 0 0 40px rgba(46, 134, 193, 0.4);
+  }
+
+  .cercle-label {
+    font-size: 14px;
+    color: #AED6F1;
+    margin-bottom: 4px;
+  }
+
+  .cercle-valeur {
+    font-size: 64px;
+    font-weight: bold;
+    color: white;
+    line-height: 1;
+  }
+
+  .creneau-label {
+    font-size: 14px;
+    color: #aaa;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .creneau-valeur {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+  }
+
+  .bouton-suivre {
+    width: 100%;
+    max-width: 360px;
+    padding: 18px;
+    background: #2E86C1;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  .bouton-annuler {
+    width: 100%;
+    max-width: 360px;
+    padding: 18px;
+    background: #C0392B;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .alerte-info {
+    font-size: 13px;
+    color: #aaa;
+    text-align: center;
+    font-style: italic;
+    max-width: 320px;
+  }
+
+  .loading {
+    font-size: 32px;
+    color: #AED6F1;
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+</style>
+</head>
+<body>
+<div class='confirmation-container'>
+
+  <div class='entete'>
+    <a href='services.html' class='bouton-retour'>← Retour</a>
+    <span class='entete-titre'>Confirmation</span>
+  </div>
+
+  <p class='bienvenue' id='message-bienvenue'>Bonjour !</p>
+  <p class='service-enregistre' id='nom-service'>Chargement...</p>
+
+  <div class='cercle-numero'>
+    <span class='cercle-label'>N°</span>
+    <span class='cercle-valeur' id='numero-valeur'><span class='loading'>...</span></span>
+  </div>
+
+  <p class='creneau-label'>Votre creneau :</p>
+  <p class='creneau-valeur' id='creneau-valeur'>Calcul en cours...</p>
+
+  <a href='suivi.html' class='bouton-suivre'>Suivre ma file en direct</a>
+
+  <button class='bouton-annuler' onclick='annulerNumero()'>Annuler mon numero</button>
+
+  <p class='alerte-info'>Vous recevrez une alerte quand il restera 3 personnes avant vous. Restez a proximite.</p>
+
+</div>
+
 <script src='https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js'></script>
-<script src='https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js'></script>
 <script src='https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js'></script>
 <script>
-// Meme configuration Firebase que inscription.html
 const firebaseConfig = {
- apiKey: "AIzaSyAT0mDCRHXznWsQ2VDGDEfLc-nO-_2xDis",
+  apiKey: "AIzaSyAT0mDCRHXznWsQ2VDGDEfLc-nO-_2xDis",
   authDomain: "stop-waiting.firebaseapp.com",
   projectId: "stop-waiting",
   storageBucket: "stop-waiting.firebasestorage.app",
   messagingSenderId: "598109355925",
   appId: "1:598109355925:web:43e973299f32992eff009c"
- };
+};
+
 if (!firebase.apps.length) {
-firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 }
 const db = firebase.firestore();
-const auth = firebase.auth();
-// Recuperer le service depuis l'URL
+
+// Recuperer le service
 var params = new URLSearchParams(window.location.search);
-var service = params.get('service') || 'Clinique La Grace';
+var service = localStorage.getItem('service') || params.get('service') || 'Clinique La Grace';
 localStorage.setItem('service', service);
-// Afficher le prenom
+
 var prenom = localStorage.getItem('prenom') || '';
-if (prenom) {
-document.getElementById('message-bienvenue')
-.textContent = 'Bonjour ' + prenom + ' !';
+
+// Afficher bienvenue
+document.getElementById('message-bienvenue').textContent = 'Bonjour ' + prenom + ' !';
+document.getElementById('nom-service').textContent = service + ' a bien ete enregistree.';
+
+// Calculer le creneau — date du jour + heure estimee
+function calculerCreneau(numero) {
+  var jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  var mois = ['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'];
+  var now = new Date();
+  var jour = jours[now.getDay()];
+  var date = now.getDate();
+  var moisNom = mois[now.getMonth()];
+  var annee = now.getFullYear();
+
+  // Heure estimee = heure actuelle + (numero * 10 minutes)
+  var heureEstimee = new Date(now.getTime() + numero * 10 * 60 * 1000);
+  var h = heureEstimee.getHours();
+  var m = heureEstimee.getMinutes().toString().padStart(2, '0');
+
+  return jour + ' ' + date + ' ' + moisNom + ' ' + annee + ' - ' + h + 'h' + m;
 }
-// Afficher le nom du service
-document.getElementById('nom-service')
-.textContent = service;
+
 // Prendre un numero dans Firebase
-var monNumero = null;
-auth.onAuthStateChanged(function(user) {
-if (user) {
-// Compter combien de personnes sont dans la file
 db.collection('files')
-.where('service', '==', service)
-.where('statut', '==', 'en-attente')
-.get()
-.then(function(snapshot) {
-monNumero = snapshot.size + 1;
-// Enregistrer dans Firebase
-return db.collection('files').add({
-userId: user.uid,
-prenom: prenom,
-service: service,
-numero: monNumero,
-statut: 'en-attente',
-dateCreation: new Date()
-});
-})
-.then(function(docRef) {
-localStorage.setItem('fileId', docRef.id);
-localStorage.setItem('monNumero',
-monNumero.toString());
-// Afficher le numero
-var numFormate = monNumero.toString()
-.padStart(3, '0');
-document.getElementById('numero-valeur')
-.textContent = numFormate;
-});
-} else {
-// Non connecte — utiliser localStorage
-var num = parseInt(
-localStorage.getItem('compteur') || '0') + 1;
-localStorage.setItem('compteur', num.toString());
-localStorage.setItem('monNumero', num.toString());
-document.getElementById('numero-valeur')
-.textContent = num.toString().padStart(3, '0');
+  .where('service', '==', service)
+  .where('statut', '==', 'en-attente')
+  .get()
+  .then(function(snapshot) {
+    var monNumero = snapshot.size + 1;
+
+    return db.collection('files').add({
+      prenom: prenom,
+      service: service,
+      numero: monNumero,
+      statut: 'en-attente',
+      dateCreation: new Date()
+    }).then(function(docRef) {
+      localStorage.setItem('fileId', docRef.id);
+      localStorage.setItem('monNumero', monNumero.toString());
+
+      // Afficher le numero
+      document.getElementById('numero-valeur').textContent = monNumero.toString().padStart(3, '0');
+
+      // Afficher le creneau
+      document.getElementById('creneau-valeur').textContent = calculerCreneau(monNumero);
+    });
+  })
+  .catch(function(error) {
+    console.error('Erreur Firebase:', error);
+    // Fallback localStorage
+    var num = parseInt(localStorage.getItem('compteur') || '0') + 1;
+    localStorage.setItem('compteur', num.toString());
+    localStorage.setItem('monNumero', num.toString());
+    document.getElementById('numero-valeur').textContent = num.toString().padStart(3, '0');
+    document.getElementById('creneau-valeur').textContent = calculerCreneau(num);
+  });
+
+function annulerNumero() {
+  var fileId = localStorage.getItem('fileId');
+  if (fileId) {
+    db.collection('files').doc(fileId).update({ statut: 'annule' })
+      .then(function() {
+        localStorage.removeItem('fileId');
+        localStorage.removeItem('monNumero');
+        window.location.href = 'services.html';
+      });
+  } else {
+    window.location.href = 'services.html';
+  }
 }
-});
 </script>
+</body>
+</html>
